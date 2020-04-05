@@ -166,7 +166,7 @@ class Learner(object):
             S = y[0]
             I = y[1]
             R = y[2]
-            return [-beta*S*I, beta*S*I-gamma*I, gamma*I]
+            return [-beta*S*I, beta*S*I-gamma*I, 1-(-beta*S*I+beta*S*I-gamma*I)]
         extended_actual = np.concatenate((data.values, [None] * (size - len(data.values))))
         extended_recovered = np.concatenate((recovered.values, [None] * (size - len(recovered.values))))
         extended_death = np.concatenate((death.values, [None] * (size - len(death.values))))
@@ -197,7 +197,7 @@ def loss(point, data, recovered, s_0, i_0, r_0):
         S = y[0]
         I = y[1]
         R = y[2]
-        return [-beta*S*I, beta*S*I-gamma*I, gamma*I]
+        return [-beta*S*I, beta*S*I-gamma*I, 1-(-beta*S*I+beta*S*I-gamma*I)]
     solution = solve_ivp(SIR, [0, size], [s_0,i_0,r_0], t_eval=np.arange(0, size, 1), vectorized=True)
     l1 = np.sqrt(np.mean((solution.y[1] - data)**2))
     l2 = np.sqrt(np.mean((solution.y[2] - recovered)**2))
